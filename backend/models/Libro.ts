@@ -27,7 +27,7 @@ export class Libro extends Model<InterfaceLibro> implements InterfaceLibro {
 
     @AllowNull(true)
     @Column(DataTypes.STRING)
-    portada!: string;
+    portada?: string;
 
     @AllowNull(false)
     @Column({ type: DataTypes.ENUM(...Object.values(EstadoLectura)) })
@@ -66,9 +66,19 @@ export class Libro extends Model<InterfaceLibro> implements InterfaceLibro {
         const libroBd: Libro | null= await Libro.findByPk(id);
         let salida: any = null;
         if (libroBd) {
-           await libroBd.update(libro);
-           await libroBd.reload();
-           salida = libroBd;
+            await libroBd.update(libro);
+            await libroBd.reload();
+            salida = libroBd;
+        }
+        return salida;
+    }
+
+    static async borrarPorId(id:number): Promise<Libro | null> {
+        const libroBd: Libro | null = await Libro.findByPk(id);
+        let salida: any = null;
+        if (libroBd) {
+            salida = libroBd;
+            await libroBd.destroy();
         }
         return salida;
     }
@@ -76,5 +86,6 @@ export class Libro extends Model<InterfaceLibro> implements InterfaceLibro {
     static async contar():Promise<number> {
         return await Libro.count();
     }
+
 
 }
