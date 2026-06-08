@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authRoutes = require('./auth');
-
+const bookRoutes = require('./books');
 // Ruta de prueba
 router.get('/health', (req, res) => {
   res.status(200).json({
@@ -14,7 +14,7 @@ router.get('/health', (req, res) => {
 
 // Rutas de autenticación
 router.use('/auth', authRoutes);
-
+router.use('/libros', bookRoutes);
 // Ruta de ejemplo
 router.get('/test', (req, res) => {
   res.json({
