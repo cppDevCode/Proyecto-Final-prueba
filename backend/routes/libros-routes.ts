@@ -14,6 +14,7 @@ export class LibrosRouter {
     private rutasLibros():void {
         const libroC:LibrosController = new LibrosController();
         this.router.get('/', libroC.getLibros);
+        this.router.patch('/:id/actualizarresenia',libroC.patchResenia); 
         this.router.get('/:id', libroC.getPorId);
         this.router.post('/', libroC.postLibro);
         this.router.put('/:id', libroC.putLibro);

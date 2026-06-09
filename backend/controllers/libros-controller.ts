@@ -102,4 +102,23 @@ export class LibrosController {
         }
         return res.status(codigo).json(salida);
     }
+
+    public patchResenia = async (req: Request, res: Response): Promise<Response> => {
+        let codigo: number;
+        let salida: object | null;
+        try{
+            codigo = 200;
+            salida = await Libro.actualizarResenia(Number(req.params.id), req.body);
+            if (!salida) {
+                throw Error;
+            }
+        return res.status(codigo).json({ msg: "Reseña actualizada correctamente", libro: salida });
+    }
+        catch (error) {
+            codigo = 500;
+            salida = {msg: error};
+            return res.status(codigo).json(salida);
+        }
+        
+    }
 }
