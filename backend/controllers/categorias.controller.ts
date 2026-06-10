@@ -18,4 +18,53 @@ export class CategoriasController {
       next(error);
     }
   };
+
+  public getCategoriaById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> => {
+    try {
+      const { id } = req.params;
+      const categoria: ICategoria | null = await Categoria.encontrarPorId(Number(id));
+      if (!categoria) {
+        return res.status(404).json({ msg: `No se encontró la categoría con ID ${id}` });
+      }
+      return res.status(200).json(categoria);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public postCategoria = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> => {
+    try {
+      const nuevaCategoria: ICategoria = await Categoria.crear(req.body);
+      return res.status(201).json(nuevaCategoria);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public deleteCategoria = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> => {
+    try {
+      const { id } = req.params;
+      const categoriaEliminada: ICategoria | null = await Categoria.borrar(Number(id));
+      if (!categoriaEliminada) {
+        return res
+          .status(404)
+          .json({ msg: `No se encontró la categoría con ID ${id} para eliminar` });
+      }
+      return res.status(200).json({ msg: `Categoría con ID ${id} eliminada exitosamente` });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
