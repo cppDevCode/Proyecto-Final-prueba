@@ -12,6 +12,9 @@ export class CategoriasRouter {
   private rutasCategorias() {
     const categoriaController: CategoriasController = new CategoriasController();
     this.router.get("/", categoriaController.getCategorias);
+    this.router.get("/:id", categoriaController.getCategoriaById);
+    this.router.post("/", categoriaController.postCategoria);
+    this.router.delete("/:id", categoriaController.deleteCategoria);
   }
 
   public getRouter(): Router {
