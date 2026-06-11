@@ -1,6 +1,8 @@
 import express, { Router } from "express";
 import { LibrosRouter } from "./libros-routes";
 import { CategoriasRouter } from "./categorias.routes";
+import { EstadisticasController } from "../controllers/estadisticas-controller";
+import { LibrosController } from "../controllers/libros-controller";
 
 export default class Enrutador {
   private router: Router;
@@ -26,6 +28,7 @@ export default class Enrutador {
 
   private rutaLibros() {
     this.router.use("/libros", new LibrosRouter().getRouter());
+    this.router.get("/estadisticas", new EstadisticasController().getEstadisticas);
   }
 
   private rutaCategorias() {
