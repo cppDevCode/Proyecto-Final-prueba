@@ -1,5 +1,4 @@
 import express, { Router } from 'express';
-import { AuthRouter } from './auth-routes';
 import { LibrosRouter } from './libros-routes';
 import { EstadisticasController } from '../controllers/estadisticas-controller';
 import { LibrosController } from '../controllers/libros-controller';
@@ -11,7 +10,6 @@ export default class Enrutador {
   constructor () {
     this.router = express.Router();
     this.RutaEstado();
-    this.rutaAuth();
     this.rutaLibros();
   }
 
@@ -24,11 +22,6 @@ export default class Enrutador {
           environment: process.env.NODE_ENV || 'development'
         });
     });
-  }
-
-  private rutaAuth() {
-    // Rutas de autenticación
-    this.router.use('/auth', new AuthRouter().getRouter());
   }
 
   private rutaLibros() {
