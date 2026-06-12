@@ -58,13 +58,17 @@ Agrega sus rutas a src/routes/books.ts
 
 #### Julieta Dabús
 
-Agrega a src/interfaces/IBook.ts: IUpdateBookRatingDTO
-src/controllers/bookRatingController.ts
+**Califaciones y Relaciones FK**
+_Backend_
 
-PATCH /api/libros/:id/calificacion — valida que sea entre 1 y 5
-GET /api/libros/mejor-calificados — ORDER BY rating DESC donde rating no es null
-
-Agrega sus rutas a src/routes/books.ts
+- Controlador calificacion-libros-controller.ts con los siguientes endpoints:
+1. PATCH /api/libros/:id/calificacion — valida que sea entre 1 y 5
+2. GET /api/libros/mejor-calificados — devuelve libros con puntaje asignado, ordenados de mayor a menor
+- Rutas agregadas a libros-routes.ts
+- Relaciones FK definidas mediante decoradores @ForeingKey y @BelongsTo en el modelo Libro.ts: 
+  - usuarioId -> @ForeingKey (() => Usuario)
+  - generoId -> @ForeingKey (() => Categoria)
+- Actualización de traerTodos y encontrarPorId para incluir Usuario y Categoria en la respuesta
 
 #### Matías F. Ledesma González
 
