@@ -7,8 +7,9 @@ import dotenv from "dotenv";
 import { sequelize } from "../models";
 import errorHandler from "../middleware/error-handler.middleware";
 import Enrutador from "../routes/index.routes";
-import { ErrorLibros } from "../middleware/error-libros-handler.middlerware";
-import { ErrorUsuarios } from "../middleware/error-usuarios-handler.middlerware";
+import { ErrorLibros } from "../middleware/error-libros-handler.middleware";
+import { ErrorUsuarios } from "../middleware/error-usuarios-handler.middleware";
+import { ErrorCategorias } from "../middleware/error-categorias-handler.middleware";
 
 //Clase Servidor
 export class Servidor {
@@ -66,6 +67,7 @@ export class Servidor {
   private errores() {
     this.app.use(ErrorUsuarios.manejadorErrores);
     this.app.use(ErrorLibros.manejadorErrores);
+    this.app.use(ErrorCategorias.manejadorErrores);
     this.app.use(errorHandler);
   }
 
@@ -84,7 +86,7 @@ export class Servidor {
         const { LibroSeeder } = require("../seeders/20260606-seeder-libro");
         const { CategoriaSeeder } = require("../seeders/20260605145618-categorias");
         await CategoriaSeeder.cargarCategorias();
-        await LibroSeeder.generarSeed();        
+        await LibroSeeder.generarSeed();
       }
 
       this.app.listen(this.port, () => {
