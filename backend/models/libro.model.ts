@@ -123,7 +123,14 @@ export class Libro extends Model<InterfaceLibro> implements InterfaceLibro {
         return salida;
     }
 
+    static async traerPorEstado(estado: EstadoLectura): Promise<InterfaceLibro[] | []> {
+        return await Libro.findAll({
+                where: { estado: estado },
+                include: [
+                    {model: Categoria, attributes: ['id', 'nombre']},
+                ]
+        
+            });
+    }
 }
-
-
 
