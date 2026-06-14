@@ -6,7 +6,6 @@ export class EstadisticasController {
     public getEstadisticas = async (req:Request, res: Response): Promise<Response> => {
         let codigo: number;
         let salida: object; 
-
         try {codigo=200;
             salida=await Estadisticas.obtenerEstadisticas();}
             catch (error) {
