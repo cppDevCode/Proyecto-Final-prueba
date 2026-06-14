@@ -7,8 +7,8 @@ import dotenv from "dotenv";
 import { sequelize } from "../models";
 import errorHandler from "../middleware/error-handler.middleware";
 import Enrutador from "../routes/index.routes";
-import { ErrorLibros } from "../middleware/error-libros-handler.middlerware";
-import { ErrorUsuarios } from "../middleware/error-usuarios-handler.middlerware";
+import { ErrorLibros } from "../middleware/error-libros-handler.middleware";
+import { ErrorUsuarios } from "../middleware/error-usuarios-handler.middleware";
 import { ErrorCategorias } from "../middleware/error-categorias-handler.middleware";
 
 //Clase Servidor

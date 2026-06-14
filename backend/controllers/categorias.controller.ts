@@ -1,7 +1,6 @@
 import { Categoria } from "../models/categoria.model";
 import { ICategoria } from "../interfaces/categoria.interface";
 import { Request, Response, NextFunction } from "express";
-import { ErrorCategorias } from "../middleware/error-categorias-handler.middleware";
 export class CategoriasController {
   public getCategorias = async (
     req: Request,
