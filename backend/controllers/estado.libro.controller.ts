@@ -1,48 +1,43 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction} from 'express';
 import { Libro } from '../models/libro.model';
-import { EstadoLectura, type IActualizarEstado } from '../interfaces/Libro.interface';
+import { EstadoLectura, InterfaceLibro, type IActualizarEstado } from '../interfaces/Libro.interface';
 
 export class EstadoLibroController {
 
-    public obtenerLeidos = async (req: Request, res: Response) => {
+    public obtenerLeidos = async (req: Request, res: Response, next: NextFunction) : Promise <Response |void> => {
         try { //busco en bd libros con estado "leido"
-            const libros = await Libro.findAll({
-                where: { estado: EstadoLectura.Leido }
-            });
+            const libros = await Libro.traerPorEstado(EstadoLectura.Leido);
             res.json(libros); //devuelvo array de libros
         } catch (error) {
-            res.status(500).json({ error: 'Error interno del servidor' });
+            next(error);
         }
     };
 
-    public obtenerLeyendo = async (req: Request, res: Response) => {
+    public obtenerLeyendo = async (req: Request, res: Response, next: NextFunction) : Promise <Response |void> => {
         try {//busco en bd libros con estado "leyendo"
-            const libros = await Libro.findAll({
-                where: { estado: EstadoLectura.Leyendo }
-            });
+            const libros = await Libro.traerPorEstado(EstadoLectura.Leyendo);
             res.json(libros); //devuelvo array de libros
         } catch (error) {
-            res.status(500).json({ error: 'Error interno del servidor' });
+            next(error);
         }
     };
 
-    public obtenerPorLeer = async (req: Request, res: Response) => {
+    public obtenerPorLeer = async (req: Request, res: Response, next: NextFunction) : Promise <Response |void> => {
         try {//busco en bd libros con estado "por leer"
-            const libros = await Libro.findAll({
-                where: { estado: EstadoLectura.PorLeer }
-            });
+            const libros = await Libro.traerPorEstado(EstadoLectura.PorLeer);
+            
             res.json(libros); //devuelvo array de libros
         } catch (error) {
-            res.status(500).json({ error: 'Error interno del servidor' });
+            next(error);
         }
     };
 
-    public actualizarEstado = async (req: Request, res: Response) => {
+    public actualizarEstado = async (req: Request, res: Response, next: NextFunction) : Promise <Response |void> => {
         try {
             // valido ID
             const id = parseInt(req.params.id, 10);
             if (isNaN(id)) {
-                return res.status(400).json({ error: 'ID inválido' });
+                throw Error('ID inválido');
             }
 
             // Leo estado del body
@@ -51,23 +46,20 @@ export class EstadoLibroController {
             // valido que estado sea enum
             const estadosValidos = Object.values(EstadoLectura);
             if (!estado || !estadosValidos.includes(estado)) {
-                return res.status(400).json({
-                    error: `Estado inválido. Debe ser uno de: ${estadosValidos.join(', ')}`
-                });
+                throw Error(`Estado inválido. Debe ser uno de: ${estadosValidos.join(', ')}`);
             }
 
-            // busco libro por ID
-            const libro = await Libro.findByPk(id);
+            const libro : InterfaceLibro | null = await Libro.actualizarLibro(id, { estado });
             if (!libro) {
-                return res.status(404).json({ error: 'Libro no encontrado' });
+                const error = new Error('Libro no encontrado');
+                error.name = '404-Libros';
+                return next(error);
             }
 
-            // actualizo estado
-            await libro.update({ estado });
             res.json(libro);
 
         } catch (error) {
-            res.status(500).json({ error: 'Error interno del servidor' });
+            next(error);
         }
     };
 }
