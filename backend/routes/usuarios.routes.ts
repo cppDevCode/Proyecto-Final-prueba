@@ -1,4 +1,4 @@
-import { UsuariosController } from "../controllers/usuarios-controller";
+import { UsuariosController } from "../controllers/usuarios.controller";
 import express, { Router } from 'express';
 
 export class UsuariosRouter {
