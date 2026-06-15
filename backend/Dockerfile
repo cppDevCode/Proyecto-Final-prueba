@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY tsconfig.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY ./ ./
 
@@ -23,7 +23,7 @@ RUN addgroup -g 1001 -S nodejs && \
 COPY --from=constructor --chown=usuario-grupo6:nodejs /app/dist ./dist
 COPY --from=constructor --chown=usuario-grupo6:nodejs /app/package*.json ./
 
-RUN npm ci --omit=dev && \
+RUN npm install --omit=dev && \
     npm cache clean --force
 
 USER usuario-grupo6
